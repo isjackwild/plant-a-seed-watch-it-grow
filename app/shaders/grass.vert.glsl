@@ -1,6 +1,6 @@
 precision highp float;
 
-#define BLADE_SEGS `+BLADE_SEGS.toFixed(1)+` // # of blade segments
+#define BLADE_SEGS ${BLADE_SEGS} // # of blade segments
 #define BLADE_DIVS (BLADE_SEGS + 1.0)  // # of divisions
 #define BLADE_VERTS (BLADE_DIVS * 2.0) // # of vertices (per side, so 1/2 total)
 
@@ -30,27 +30,30 @@ void main() {
 	float bside = floor(vindex / BLADE_VERTS);  // front/back side of blade
 	float xside = mod(vi, 2.0);  // left/right edge (x=0 or x=1)
 	float x = shape.x * (xside - 0.5) * (1.0 - pow(hpct, 3.0)); // taper blade as approach tip
+
 	// apply blade's natural curve amount, then apply animated curve amount by time
-	float curve = shape.w + 0.4 * (sin(time * 4.0 + offset.x * 0.8) + cos(time * 4.0 + offset.y * 0.8));
+	float curve = shape.w + 0.4 * (sin(time * 4.0 + offset.x * 0.8) + cos(time * 4.0 + offset.z * 0.8));
 	float y = shape.z * hpct + curve * (hpct * hpct); // pow(hpct, 2.0);
 
 	// based on centre of view cone position, what grid tile should
 	// this piece of grass be drawn at?
 	vec2 gridOffset = vec2(
 		floor((drawPos.x - offset.x) / patchSize) * patchSize + patchSize / 2.0,
-		floor((drawPos.y - offset.y) / patchSize) * patchSize + patchSize / 2.0
+		floor((drawPos.y - offset.z) / patchSize) * patchSize + patchSize / 2.0
 	);
 
 	// rotate this blade vertex by this blade's rotation
+	vec2 rotated = rotate(x, y, offset.w);
 	vec4 pos = vec4(
-		rotate(x, y, offset.w),
-		shape.y * di / BLADE_SEGS + offset.z,
+		rotated.x,
+		shape.y * di / BLADE_SEGS,
+		rotated.y,
 		1.0
 	);
 
 	// move to grid position and then to blade position
 	pos.x += gridOffset.x + offset.x;
-	pos.y += gridOffset.y + offset.y;
+	pos.z += gridOffset.y + offset.z;
 
 	// grass texture coordinate for this vertex
 	vec2 uv = vec2(xside, di * 2.0);
@@ -65,7 +68,7 @@ void main() {
 	// outputs
 	vColor = vec4(
 		c * 0.85 + cos(offset.x * 80.0) * 0.05,
-		c + sin(offset.y * 140.0) * 0.05,
+		c + sin(offset.z * 140.0) * 0.05,
 		c + sin(offset.x * 99.0) * 0.05,
 		1.0
 	);

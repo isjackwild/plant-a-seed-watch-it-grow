@@ -82,7 +82,7 @@ export const init = () => {
 	} else {
 		console.log('orientation controls');
 		controls = new THREE.OrbitControls(camera);
-		controls.target.set(0, 160, 0);
+		controls.target.set(0, 0, 0);
 	}
 	
 	

@@ -20,9 +20,14 @@ export const init = () => {
 
 	grass = new Grass();
 	scene.add(grass.mesh);
+
+	scene.add(new THREE.AxesHelper(100));
 }
 
-export const update = (delta) => {
-	boxMesh.rotation.y += 0.01 * delta;
-	boxMesh.rotation.x += 0.01 * delta;
+export const update = (correction) => {
+	boxMesh.rotation.y += 0.01 * correction;
+	boxMesh.rotation.x += 0.01 * correction;
+
+	if (grass) grass.update(camera.position, correction);
 }
+
