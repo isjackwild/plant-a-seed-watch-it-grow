@@ -1,5 +1,5 @@
-export const BLADE_COUNT = 10000;
-export const PATCH_RADIUS = 100;
+export const BLADE_COUNT = 80000;
+export const PATCH_RADIUS = 150;
 
 export const BLADE_SEGS = 4; // # of blade segments
 export const BLADE_WIDTH = 0.15;

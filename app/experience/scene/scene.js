@@ -19,8 +19,8 @@ export const init = () => {
 	const boxGeometry = new THREE.BoxGeometry( 10, 10, 10 );
 	const boxMaterial = new THREE.MeshBasicMaterial( { color: 0x0000ff, wireframe: true } );
 
-	// landscape = new Landscape();
-	// scene.add(landscape.mesh);
+	landscape = new Landscape();
+	scene.add(landscape.mesh);
 
 	grass = new Grass();
 	scene.add(grass.mesh);
@@ -31,8 +31,8 @@ export const init = () => {
 export const update = (correction) => {
 	if (grass) {
 		const inFrontOfCamera = {
-			x: camera.position.x + (Math.sin(camera.rotation.y + Math.PI) * PATCH_RADIUS * 1.1),
-			z: camera.position.z + (Math.cos(camera.rotation.y + Math.PI) * PATCH_RADIUS * 1.1),
+			x: camera.position.x + (Math.sin(camera.rotation.y + Math.PI) * PATCH_RADIUS),
+			z: camera.position.z + (Math.cos(camera.rotation.y + Math.PI) * PATCH_RADIUS),
 		}
 		grass.update(inFrontOfCamera, correction);
 	}

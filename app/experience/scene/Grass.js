@@ -110,7 +110,7 @@ const Grass = () => {
 				fogNear: {type: 'f', value: 1.0},
 				fogFar: {type: 'f', value: PATCH_RADIUS * 10},
 				grassFogColor: {type: '3f', value: GRASS_FOG_COLOR.toArray()},
-				grassFogFar: {type: 'f', value: PATCH_RADIUS * 2}
+				grassFogFar: {type: 'f', value: PATCH_RADIUS * 2.0}
 			},
 			vertexShader: window.app.assets.shaders['grass.vert'].replace('${BLADE_SEGS}', BLADE_SEGS.toFixed(1)),
 			fragmentShader: window.app.assets.shaders['grass.frag'],
@@ -120,7 +120,7 @@ const Grass = () => {
 	};
 
 	const update = ({ x, z }, correction) => {
-		time += 1 * correction * 0.001;
+		time += 1 * correction * 0.006;
 		mesh.material.uniforms.time.value = time;
 		mesh.material.uniforms.drawPos.value[0] = x;
 		mesh.material.uniforms.drawPos.value[1] = z;

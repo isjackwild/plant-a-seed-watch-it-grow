@@ -1,20 +1,44 @@
+import { 
+	FOG_COLOR,
+	PATCH_RADIUS,
+} from '../../CONSTANTS';
+
 const Landscape = () => {
 	let mesh;
 
 	const createGeometry = () => {
-		const geometry = new THREE.PlaneBufferGeometry(30000, 30000, 128 - 1, 128 - 1);
+		const geometry = new THREE.PlaneBufferGeometry(5000, 5000, 128 - 1, 128 - 1);
 		geometry.rotateX(Math.PI * -0.5);
 		return geometry;
 	};
 
 	const createMesh = (geometry) => {
-		const material = new THREE.MeshStandardMaterial({
-			color: 0xff0000,
-			bumpScale: 1,
-			metalness: 0,
-			roughness: 0.5,
-			wireframe: true,
+		const material = new THREE.RawShaderMaterial({
+			uniforms: {
+				offset: {type: '2f', value: [0.0, 0.0]},
+				uvOffset: {type: '2f', value: [0.0, 0.0]},
+				map: {type: 't', value: window.app.assets.textures['ground']},
+				// map1: {type: 't', value: texs[0]},
+				// map2: {type: 't', value: texs[1]},
+				heightMap: {type: 't', value: window.app.assets.textures['noise']},
+				heightMapScale: {type: '3f', value: [1.0, 1.0, 10.0]},
+				fogColor: {type: '3f', value: FOG_COLOR.toArray()},
+				fogNear: {type: 'f', value: 1.0},
+				fogFar: {type: 'f', value: PATCH_RADIUS * 10},
+				grassFogFar: {type: 'f', value: PATCH_RADIUS * 2}
+			},
+			vertexShader: window.app.assets.shaders['landscape.vert'],
+			fragmentShader: window.app.assets.shaders['landscape.frag'],
 		});
+
+		// const material = new THREE.MeshBasicMaterial({
+		// 	// color: 0xdb7923,
+		// 	// bumpScale: 1,
+		// 	// metalness: 0,
+		// 	// roughness: 0.5,
+		// 	// wireframe: true,
+		// 	map: window.app.assets.textures['ground'],
+		// });
 		return new THREE.Mesh(geometry, material);
 	};
 

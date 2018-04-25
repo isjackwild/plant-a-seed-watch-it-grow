@@ -19,14 +19,31 @@ export const loadAssets = (onComplete) => {
 	THREE.DefaultLoadingManager.onLoad = onComplete;
 
 	textureLoader.load('assets/maps/grass.jpg', (texture) => {
-		window.app.assets.textures = [];
+		window.app.assets.textures = window.app.assets.textures || [];
 		window.app.assets.textures['grass'] = texture;
 	});
 
+	textureLoader.load('assets/maps/grass-landscape.jpg', (texture) => {
+		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+		texture.repeat.set(250, 250);
+		window.app.assets.textures = window.app.assets.textures || [];
+		window.app.assets.textures['ground'] = texture;
+	});
+
+	textureLoader.load('assets/maps/noise.png', (texture) => {
+		window.app.assets.textures = window.app.assets.textures || [];
+		window.app.assets.textures['noise'] = texture;
+	});
+
 	ShaderLoader('assets/shaders/grass.vert.glsl', 'assets/shaders/grass.frag.glsl', (vert, frag) => {
-		window.app.assets.shaders = [];
+		window.app.assets.shaders = window.app.assets.shaders || [];
 		window.app.assets.shaders['grass.vert'] = vert;
 		window.app.assets.shaders['grass.frag'] = frag;
-		console.log(window.app.assets);
+	});
+
+	ShaderLoader('assets/shaders/landscape.vert.glsl', 'assets/shaders/landscape.frag.glsl', (vert, frag) => {
+		window.app.assets.shaders = window.app.assets.shaders || [];
+		window.app.assets.shaders['landscape.vert'] = vert;
+		window.app.assets.shaders['landscape.frag'] = frag;
 	});
 }
