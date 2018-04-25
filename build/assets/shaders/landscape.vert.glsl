@@ -21,7 +21,7 @@ void main() {
 	vec2 pos = vec2(position.xz + offset);
 	vSamplePos = pos * heightMapScale.xy + vec2(0.5, 0.5);
 
-	vec4 ch = texture2D(heightMap, pos);
+	vec4 ch = texture2D(heightMap, vSamplePos);
 	vHeightMapValue = ch;
 
 	float height = ch.r * heightMapScale.z;

@@ -31,6 +31,8 @@ export const loadAssets = (onComplete) => {
 	});
 
 	textureLoader.load('assets/maps/noise.png', (texture) => {
+		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+		// texture.repeat.set(1000, 1000);
 		window.app.assets.textures = window.app.assets.textures || [];
 		window.app.assets.textures['noise'] = texture;
 	});

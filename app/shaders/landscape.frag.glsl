@@ -19,27 +19,28 @@ varying vec4 vHeightMapValue;
 
 
 void main() {
-	vec4 hdata = texture2D(heightMap, vSamplePos);
-	float altitude = hdata.r;
+	// vec4 hdata = texture2D(heightMap, vSamplePos);
+	// float altitude = hdata.r;
 	// perturb altitude with some noise using the B channel.
-	float noise = hdata.b;
-	vec3 color = texture2D(map, vUv).rgb;
+	// float noise = hdata.b;
+	vec3 color = texture2D(map, vUv * 250.0).rgb;
 
-	vec3 light = hdata.g * LIGHT_COLOR;
-	float depth = gl_FragCoord.z / gl_FragCoord.w;
+	color = mix(color, vec3(0.0), 1.0 - vHeightMapValue.r);
+	// vec3 light = hdata.g * LIGHT_COLOR;
+	// float depth = gl_FragCoord.z / gl_FragCoord.w;
 
 	// If terrain is covered by grass geometry, blend color to 'dirt'
-	float dirtFactor = 1.0 - smoothstep(grassFogFar * 0.2, grassFogFar * 0.65, depth);
+	// float dirtFactor = 1.0 - smoothstep(grassFogFar * 0.2, grassFogFar * 0.65, depth);
 	// If we're not on a grass terrain type, don't shade it...
-	float dirtShade = (color.r + color.g + color.b) / 3.0;
+	// float dirtShade = (color.r + color.g + color.b) / 3.0;
 
 	// Compute terrain color
-	color = mix(color, DIRT_COLOR * dirtShade, dirtFactor) * light;
+	// color = mix(color, DIRT_COLOR * dirtShade, dirtFactor) * light;
 
 	// then apply atmosphere fog
-	float fogFactor = smoothstep(fogNear, fogFar, depth);
-	color = mix(color, fogColor, fogFactor);
-	// gl_FragColor = vec4(color, 1.0);
+	// float fogFactor = smoothstep(fogNear, fogFar, depth);
+	// color = mix(color, fogColor, fogFactor);
+	gl_FragColor = vec4(color, 1.0);
 
-	gl_FragColor = vHeightMapValue;
+	// gl_FragColor = vHeightMapValue;
 }
