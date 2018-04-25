@@ -24,7 +24,7 @@ void main() {
 	vec4 ch = texture2D(heightMap, vSamplePos);
 	vHeightMapValue = ch;
 
-	float height = ch.r * heightMapScale.z;
+	float height = ((ch.r * 2.0) - 1.0) * heightMapScale.z;
 	vUv = uv + uvOffset;
 	gl_Position = projectionMatrix * modelViewMatrix * vec4(pos.x, height, pos.y, 1.0);
 }

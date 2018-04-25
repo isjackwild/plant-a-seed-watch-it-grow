@@ -23,9 +23,9 @@ void main() {
 	// float altitude = hdata.r;
 	// perturb altitude with some noise using the B channel.
 	// float noise = hdata.b;
-	vec3 color = texture2D(map, vUv * 250.0).rgb;
+	vec3 color = texture2D(map, vUv * 1000.0).rgb;
 
-	color = mix(color, vec3(0.0), 1.0 - vHeightMapValue.r);
+	color = mix(color, vec3(0.0), 0.25 - vHeightMapValue.r);
 	// vec3 light = hdata.g * LIGHT_COLOR;
 	// float depth = gl_FragCoord.z / gl_FragCoord.w;
 

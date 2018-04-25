@@ -3,23 +3,26 @@ import {
 	PATCH_RADIUS,
 } from '../../CONSTANTS';
 
+import TerrainMap from './TerrainMap';
+
 const Landscape = () => {
 	let mesh;
 
 	const createGeometry = () => {
-		const geometry = new THREE.PlaneBufferGeometry(5000, 5000, 512, 512);
+		const geometry = new THREE.PlaneBufferGeometry(10000, 10000, 512, 512);
 		geometry.rotateX(Math.PI * -0.5);
 		return geometry;
 	};
 
 	const createMesh = (geometry) => {
+		const terrainMap = TerrainMap();
 		const material = new THREE.RawShaderMaterial({
 			uniforms: {
 				offset: {type: '2f', value: [0.0, 0.0]},
 				uvOffset: {type: '2f', value: [0.0, 0.0]},
 				map: {type: 't', value: window.app.assets.textures['ground']},
 				heightMap: {type: 't', value: window.app.assets.textures['noise']},
-				heightMapScale: {type: '3f', value: [0.0001, 0.0001, 1500.0]},
+				heightMapScale: {type: '3f', value: [0.00001, 0.000025, 500.0]},
 				fogColor: {type: '3f', value: FOG_COLOR.toArray()},
 				fogNear: {type: 'f', value: 1.0},
 				fogFar: {type: 'f', value: PATCH_RADIUS * 10},

@@ -25,14 +25,13 @@ export const loadAssets = (onComplete) => {
 
 	textureLoader.load('assets/maps/grass-landscape.jpg', (texture) => {
 		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-		texture.repeat.set(250, 250);
+		texture.repeat.set(10, 10);
 		window.app.assets.textures = window.app.assets.textures || [];
 		window.app.assets.textures['ground'] = texture;
 	});
 
 	textureLoader.load('assets/maps/noise.png', (texture) => {
 		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-		// texture.repeat.set(1000, 1000);
 		window.app.assets.textures = window.app.assets.textures || [];
 		window.app.assets.textures['noise'] = texture;
 	});
