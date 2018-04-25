@@ -1,15 +1,16 @@
-const BLADE_COUNT = 10000;
-const PATCH_RADIUS = 100;
+import { 
+	BLADE_COUNT,
+	PATCH_RADIUS,
+	BLADE_SEGS,
+	BLADE_WIDTH,
+	BLADE_HEIGHT_MIN,
+	BLADE_HEIGHT_MAX,
+	FOG_COLOR,
+	GRASS_FOG_COLOR,
+} from '../../CONSTANTS';
 
-const BLADE_SEGS = 4; // # of blade segments
-const BLADE_VERTS = (BLADE_SEGS + 1) * 2; // # of vertices per blade (1 side)
+const BLADE_VERTS = (BLADE_SEGS + 1) * 2;
 const BLADE_INDICES = BLADE_SEGS * 12;
-const BLADE_WIDTH = 0.15;
-const BLADE_HEIGHT_MIN = 2.0;
-const BLADE_HEIGHT_MAX = 4.0;
-
-const FOG_COLOR = new THREE.Color(0.92, 0.94, 0.98);
-const GRASS_FOG_COLOR = new THREE.Color(0.46, 0.56, 0.38);
 
 
 const Grass = () => {

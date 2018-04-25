@@ -1,9 +1,15 @@
-export let scene, boxMesh;
+import {
+	PATCH_RADIUS,
+} from '../../CONSTANTS';
+
 import { camera } from '../camera';
 import Landscape from './Landscape'
 import Grass from './Grass'
 
+export let scene;
 let landscape, grass;
+let grassCenterPoint = new THREE.Vector3();
+let tmp = new THREE.Vector3();
 
 export const init = () => {
 	scene = new THREE.Scene();
@@ -12,11 +18,9 @@ export const init = () => {
 
 	const boxGeometry = new THREE.BoxGeometry( 10, 10, 10 );
 	const boxMaterial = new THREE.MeshBasicMaterial( { color: 0x0000ff, wireframe: true } );
-	boxMesh = new THREE.Mesh( boxGeometry, boxMaterial );
-	scene.add( boxMesh );
 
-	landscape = new Landscape();
-	scene.add(landscape.mesh);
+	// landscape = new Landscape();
+	// scene.add(landscape.mesh);
 
 	grass = new Grass();
 	scene.add(grass.mesh);
@@ -25,9 +29,13 @@ export const init = () => {
 }
 
 export const update = (correction) => {
-	boxMesh.rotation.y += 0.01 * correction;
-	boxMesh.rotation.x += 0.01 * correction;
-
-	if (grass) grass.update(camera.position, correction);
+	if (grass) {
+		const inFrontOfCamera = {
+			x: camera.position.x + (Math.sin(camera.rotation.y + Math.PI) * PATCH_RADIUS * 1.1),
+			z: camera.position.z + (Math.cos(camera.rotation.y + Math.PI) * PATCH_RADIUS * 1.1),
+		}
+		grass.update(inFrontOfCamera, correction);
+	}
 }
+
 
