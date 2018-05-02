@@ -13,7 +13,7 @@ const BLADE_VERTS = (BLADE_SEGS + 1) * 2;
 const BLADE_INDICES = BLADE_SEGS * 12;
 
 
-const Grass = () => {
+const Grass = (terrainMap) => {
 	let mesh;
 	let time = 0;
 
@@ -104,6 +104,8 @@ const Grass = () => {
 			uniforms: {
 				time: {type: 'f', value: 0.0},
 				map: {type: 't', value: texture},
+				heightMap: {type: 't', value: terrainMap},
+				heightMapScale: {type: '3f', value: [0.0001, 0.00025, 300.0]},
 				patchSize: {type: 'f', value: PATCH_RADIUS * 2.0},
 				drawPos: {type: '2f', value: [0.0, 0.0]},
 				fogColor: {type: '3f', value: FOG_COLOR.toArray()},

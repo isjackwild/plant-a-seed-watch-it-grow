@@ -28,7 +28,7 @@ const setupRenderer = () => {
 		canvas,
 		antialias: true,
 	});
-	renderer.setClearColor(0xffffff);
+	renderer.setClearColor(0xb2efff);
 	renderer.setPixelRatio(window.devicePixelRatio);
 	renderer.setSize(window.innerWidth, window.innerHeight);
 }

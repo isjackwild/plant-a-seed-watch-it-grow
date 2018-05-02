@@ -30,7 +30,7 @@ export const loadAssets = (onComplete) => {
 		window.app.assets.textures['ground'] = texture;
 	});
 
-	textureLoader.load('assets/maps/noise.png', (texture) => {
+	textureLoader.load('assets/maps/noise--small.jpg', (texture) => {
 		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 		window.app.assets.textures = window.app.assets.textures || [];
 		window.app.assets.textures['noise'] = texture;

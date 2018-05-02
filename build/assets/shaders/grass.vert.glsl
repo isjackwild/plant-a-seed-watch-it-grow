@@ -6,6 +6,8 @@ precision highp float;
 
 uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
+uniform sampler2D heightMap;
+uniform vec3 heightMapScale;
 uniform float patchSize; // size of grass square area (width & height)
 uniform vec2 drawPos; // centre of where we want to draw
 uniform float time;  // used to animate blades
@@ -16,6 +18,7 @@ attribute vec4 shape; // {x:width, y:height, z:lean, w:curve} (blade's shape pro
 
 varying vec4 vColor;
 varying vec2 vUv;
+varying vec2 vSamplePos;
 
 vec2 rotate (float x, float y, float r) {
 	float c = cos(r);
@@ -24,6 +27,7 @@ vec2 rotate (float x, float y, float r) {
 }
 
 void main() {
+
 	float vi = mod(vindex, BLADE_VERTS); // vertex index for this side of the blade
 	float di = floor(vi / 2.0);  // div index (0 .. BLADE_DIVS)
 	float hpct = di / BLADE_SEGS;  // percent of height of blade this vertex is at
@@ -51,9 +55,16 @@ void main() {
 		1.0
 	);
 
+
 	// move to grid position and then to blade position
 	pos.x += gridOffset.x + offset.x;
 	pos.z += gridOffset.y + offset.z;
+
+	vSamplePos = pos.xz * heightMapScale.xy + vec2(0.5, 0.5);
+	vec4 hdata = texture2D(heightMap, vSamplePos);
+	float altitude = ((hdata.r * 2.0) - 1.0) * heightMapScale.z;
+
+	pos.y += altitude;
 
 	// grass texture coordinate for this vertex
 	vec2 uv = vec2(xside, di * 2.0);
@@ -72,6 +83,9 @@ void main() {
 		c + sin(offset.x * 99.0) * 0.05,
 		1.0
 	);
+
+	// vColor = vec4(altitude);
+
 	vUv = uv;
 	gl_Position = projectionMatrix * modelViewMatrix * pos;
 }

@@ -5,6 +5,7 @@ import {
 import { camera } from '../camera';
 import Landscape from './Landscape'
 import Grass from './Grass'
+import TerrainMap from './TerrainMap';
 
 export let scene;
 let landscape, grass;
@@ -19,10 +20,12 @@ export const init = () => {
 	const boxGeometry = new THREE.BoxGeometry( 10, 10, 10 );
 	const boxMaterial = new THREE.MeshBasicMaterial( { color: 0x0000ff, wireframe: true } );
 
-	landscape = new Landscape();
+	const terrainMap = TerrainMap();
+
+	landscape = new Landscape(terrainMap);
 	scene.add(landscape.mesh);
 
-	grass = new Grass();
+	grass = new Grass(terrainMap);
 	scene.add(grass.mesh);
 
 	scene.add(new THREE.AxesHelper(100));
