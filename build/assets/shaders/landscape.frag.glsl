@@ -66,6 +66,10 @@ float lines (in vec2 pos, float b) {
 	);
 }
 
+float waves (in vec2 pos) {
+	float scale = 10.0;
+	return mod(pos.x * scale, 1.0);
+}
 
 float blendColorBurn(float base, float blend) {
 	return (blend==0.0)?blend:max((1.0-((1.0-base)/blend)),0.0);
@@ -86,17 +90,19 @@ void main() {
 	// perturb altitude with some noise using the B channel.
 	float noise = hdata.b;
 	vec3 color = sandColor;
-	color *= texture2D(map, vUv * 1250.0).rgb;
+	color *= texture2D(map, vUv * 2050.0).rgb;
 
-	vec2 resolution = vec2(10.0, 23.0);
+	vec2 resolution = vec2(100.0, 23.0);
 	vec2 st = vUv.xy * resolution;
 	st.y *= resolution.y / resolution.x;
 
 	vec2 pos = st.yx * vec2(10.0, 3.0);
-	float pattern = pos.x;
-	float n = valNoise(pos * 0.15);
+	// float pattern = pos.x;
+	float n = valNoise(pos * 0.3);
 	pos = rotate2d(n) * pos;
-	pattern = lines(pos, 0.5);
+	float linesOut = lines(pos, 0.5);
+	float wavesOut = waves(pos);
+	float pattern = (linesOut * 0.7) + (wavesOut * 0.3);
 
 	// vec3 color = texture2D(map, vUv * 500.0).rgb;
 
@@ -115,14 +121,11 @@ void main() {
 	// then apply atmosphere fog
 	float fogFactor = smoothstep(fogNear, fogFar, depth);
 	// color = mix(color, fogColor, fogFactor);
-	color *= light;
+	// color *= light;
+	// color = blendColorBurn(color, light, 1.0);
 	// color = vec3(hdata.);
 	
-	color = blendColorBurn(color, vec3(1.0 - (pattern * 0.25 * (1.0 - fogFactor))), 1.0);
-
-	// gl_FragColor = vec4(color * (1.0 - (pattern * 0.1)), 1.0);
+	color = blendColorBurn(color, vec3(1.0 - (pattern * 0.5 * (1.0 - fogFactor))), 0.5);
 	gl_FragColor = vec4(color, 1.0);
 	// gl_FragColor = vec4(vec3(pattern), 1.0);
-
-	// gl_FragColor = vHeightMapValue;
 }
