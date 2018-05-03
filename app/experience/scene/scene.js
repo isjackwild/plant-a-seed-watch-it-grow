@@ -5,10 +5,11 @@ import {
 import { camera } from '../camera';
 import Landscape from './Landscape'
 import Grass from './Grass'
+import Skybox from './Skybox'
 import TerrainMap from './TerrainMap';
 
 export let scene;
-let landscape, grass;
+let landscape, grass, sky;
 let grassCenterPoint = new THREE.Vector3();
 let tmp = new THREE.Vector3();
 
@@ -28,7 +29,10 @@ export const init = () => {
 	grass = new Grass(terrainMap);
 	scene.add(grass.mesh);
 
-	scene.add(new THREE.AxesHelper(100));
+	sky = new Skybox();
+	scene.add(sky.mesh);
+	
+	// scene.add(new THREE.AxesHelper(100));
 }
 
 export const update = (correction) => {

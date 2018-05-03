@@ -19,7 +19,8 @@ const Landscape = (terrainMap) => {
 			uniforms: {
 				offset: {type: '2f', value: [0.0, 0.0]},
 				uvOffset: {type: '2f', value: [0.0, 0.0]},
-				map: {type: 't', value: window.app.assets.textures['sand']},
+				map1: {type: 't', value: window.app.assets.textures['sand']},
+				map2: {type: 't', value: window.app.assets.textures['ground']},
 				heightMap: {type: 't', value: terrainMap},
 				// heightMapScale: {type: '3f', value: [0.00001, 0.000025, 900.0]},
 				heightMapScale: {type: '3f', value: HEIGHT_MAP_SCALE},

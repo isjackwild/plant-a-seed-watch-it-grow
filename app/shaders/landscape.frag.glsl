@@ -3,11 +3,12 @@
 
 precision highp float;
 
-const vec3 LIGHT_COLOR = vec3(1.0, 1.0, 0.9);
-const vec3 AMBIENT_LIGHT = vec3(0.3, 0.3, 0.3);
+const vec3 LIGHT_COLOR = vec3(1.0, 1.0, 1.0);
+const vec3 AMBIENT_LIGHT = vec3(0.2, 0.2, 0.2);
 const vec3 DIRT_COLOR = vec3(0.77, 0.67, 0.45);
 
-uniform sampler2D map;
+uniform sampler2D map1;
+uniform sampler2D map2;
 uniform sampler2D heightMap;
 uniform vec3 fogColor;
 uniform vec3 sandColor;
@@ -86,11 +87,11 @@ vec3 blendColorBurn(vec3 base, vec3 blend, float opacity) {
 
 void main() {
 	vec4 hdata = texture2D(heightMap, vSamplePos);
-	float altitude = hdata.r;
-	// perturb altitude with some noise using the B channel.
-	float noise = hdata.b;
 	vec3 color = sandColor;
-	color *= texture2D(map, vUv * 2050.0).rgb;
+	vec3 sand = texture2D(map1, vUv * 2050.0).rgb * 0.2;
+	vec3 grass = texture2D(map2, vUv * 250.0).rgb;
+
+	float depth = gl_FragCoord.z / gl_FragCoord.w;
 
 	vec2 resolution = vec2(100.0, 23.0);
 	vec2 st = vUv.xy * resolution;
@@ -100,18 +101,20 @@ void main() {
 	// float pattern = pos.x;
 	float n = valNoise(pos * 0.3);
 	pos = rotate2d(n) * pos;
-	float linesOut = lines(pos, 0.5);
+	float linesOut = lines(pos, 0.9);
 	float wavesOut = waves(pos);
-	float pattern = (linesOut * 0.7) + (wavesOut * 0.3);
+	float pattern = linesOut * 1.0 - (wavesOut * 0.5);
+	pattern = wavesOut * 1.0 - (linesOut * 0.5);
+	pattern = wavesOut * linesOut;
+	pattern = wavesOut;
 
 	// vec3 color = texture2D(map, vUv * 500.0).rgb;
 
 	// color = mix(color, vec3(0.0), 0.25 - vHeightMapValue.r);
-	vec3 light = (hdata.g + 0.1 * LIGHT_COLOR) + AMBIENT_LIGHT;
-	float depth = gl_FragCoord.z / gl_FragCoord.w;
+	vec3 light = (hdata.g * LIGHT_COLOR) + AMBIENT_LIGHT;
 
 	// If terrain is covered by grass geometry, blend color to 'dirt'
-	// float dirtFactor = 1.0 - smoothstep(grassFogFar * 0.2, grassFogFar * 0.65, depth);
+	
 	// If we're not on a grass terrain type, don't shade it...
 	// float dirtShade = (color.r + color.g + color.b) / 3.0;
 
@@ -119,13 +122,18 @@ void main() {
 	// color = mix(color, DIRT_COLOR * dirtShade, dirtFactor) * light;
 
 	// then apply atmosphere fog
-	float fogFactor = smoothstep(fogNear, fogFar, depth);
-	// color = mix(color, fogColor, fogFactor);
-	// color *= light;
-	// color = blendColorBurn(color, light, 1.0);
-	// color = vec3(hdata.);
 	
-	color = blendColorBurn(color, vec3(1.0 - (pattern * 0.5 * (1.0 - fogFactor))), 0.5);
+	float fogFactor = smoothstep(fogNear, fogFar, depth);
+	color = blendColorBurn(color, vec3(1.0 - (pattern * 0.6 * (1.0 - fogFactor))), 0.5);	
+	color -= sand;
+
+	float grassFactor = smoothstep(0.0, grassFogFar * 1.0, depth) * 0.66;
+	color = mix(color, grass, grassFactor);
+
+	color *= light;
+
+	// float fogFactor = smoothstep(fogNear, fogFar, depth);
+	color = mix(color, fogColor, fogFactor);
+
 	gl_FragColor = vec4(color, 1.0);
-	// gl_FragColor = vec4(vec3(pattern), 1.0);
 }
