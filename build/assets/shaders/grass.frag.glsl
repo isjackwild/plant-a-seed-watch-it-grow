@@ -21,15 +21,15 @@ void main() {
 	float depth = gl_FragCoord.z / gl_FragCoord.w;
 	// apply 'grass fog' first
 	float fogFactor = smoothstep(fogNear, grassFogFar, depth);
-	color.rgb = mix(color.rgb, grassFogColor, fogFactor);
+	// color.rgb = mix(color.rgb, grassFogColor, fogFactor);
 	// then apply atmosphere fog
-	fogFactor = smoothstep(fogNear, fogFar, depth);
-	color.rgb = mix(color.rgb, fogColor, fogFactor);
+	// float fogFactor = smoothstep(fogNear, fogFar, depth);
+	// color.rgb = mix(color.rgb, fogColor, fogFactor);
 
 	vec4 hdata = texture2D(heightMap, vSamplePos);
 
 	vec3 light = (hdata.g * LIGHT_COLOR) + AMBIENT_LIGHT;
 	color.rgb *= light;
 	// output
-	gl_FragColor = color;
+	gl_FragColor = vec4(color.rgb, 1.0 - fogFactor);
 }

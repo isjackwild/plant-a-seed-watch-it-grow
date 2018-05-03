@@ -66,6 +66,20 @@ float lines (in vec2 pos, float b) {
 	);
 }
 
+
+float blendColorBurn(float base, float blend) {
+	return (blend==0.0)?blend:max((1.0-((1.0-base)/blend)),0.0);
+}
+
+vec3 blendColorBurn(vec3 base, vec3 blend) {
+	return vec3(blendColorBurn(base.r,blend.r),blendColorBurn(base.g,blend.g),blendColorBurn(base.b,blend.b));
+}
+
+vec3 blendColorBurn(vec3 base, vec3 blend, float opacity) {
+	return (blendColorBurn(base, blend) * opacity + base * (1.0 - opacity));
+}
+
+
 void main() {
 	vec4 hdata = texture2D(heightMap, vSamplePos);
 	float altitude = hdata.r;
@@ -74,20 +88,20 @@ void main() {
 	vec3 color = sandColor;
 	color *= texture2D(map, vUv * 1250.0).rgb;
 
-	vec2 resolution = vec2(10.0, 10.0);
+	vec2 resolution = vec2(10.0, 23.0);
 	vec2 st = vUv.xy * resolution;
 	st.y *= resolution.y / resolution.x;
 
 	vec2 pos = st.yx * vec2(10.0, 3.0);
 	float pattern = pos.x;
-	float n = valNoise(pos);
+	float n = valNoise(pos * 0.15);
 	pos = rotate2d(n) * pos;
 	pattern = lines(pos, 0.5);
 
 	// vec3 color = texture2D(map, vUv * 500.0).rgb;
 
 	// color = mix(color, vec3(0.0), 0.25 - vHeightMapValue.r);
-	vec3 light = (hdata.g * LIGHT_COLOR) + AMBIENT_LIGHT;
+	vec3 light = (hdata.g + 0.1 * LIGHT_COLOR) + AMBIENT_LIGHT;
 	float depth = gl_FragCoord.z / gl_FragCoord.w;
 
 	// If terrain is covered by grass geometry, blend color to 'dirt'
@@ -99,12 +113,15 @@ void main() {
 	// color = mix(color, DIRT_COLOR * dirtShade, dirtFactor) * light;
 
 	// then apply atmosphere fog
-	// float fogFactor = smoothstep(fogNear, fogFar, depth);
+	float fogFactor = smoothstep(fogNear, fogFar, depth);
 	// color = mix(color, fogColor, fogFactor);
 	color *= light;
 	// color = vec3(hdata.);
 	
-	gl_FragColor = vec4(color * (1.0 - (pattern * 0.1)), 1.0);
+	color = blendColorBurn(color, vec3(1.0 - (pattern * 0.25 * (1.0 - fogFactor))), 1.0);
+
+	// gl_FragColor = vec4(color * (1.0 - (pattern * 0.1)), 1.0);
+	gl_FragColor = vec4(color, 1.0);
 	// gl_FragColor = vec4(vec3(pattern), 1.0);
 
 	// gl_FragColor = vHeightMapValue;

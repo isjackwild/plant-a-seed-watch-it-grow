@@ -118,6 +118,7 @@ const Grass = (terrainMap) => {
 			},
 			vertexShader: window.app.assets.shaders['grass.vert'].replace('${BLADE_SEGS}', BLADE_SEGS.toFixed(1)),
 			fragmentShader: window.app.assets.shaders['grass.frag'],
+			transparent: true,
 		});
 
 		return new THREE.Mesh(geometry, material);
