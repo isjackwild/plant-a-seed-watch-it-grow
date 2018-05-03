@@ -23,11 +23,19 @@ export const loadAssets = (onComplete) => {
 		window.app.assets.textures['grass'] = texture;
 	});
 
+
 	textureLoader.load('assets/maps/grass-landscape.jpg', (texture) => {
 		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 		texture.repeat.set(10, 10);
 		window.app.assets.textures = window.app.assets.textures || [];
 		window.app.assets.textures['ground'] = texture;
+	});
+	
+	textureLoader.load('assets/maps/seamless-sand--grey.jpg', (texture) => {
+		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+		texture.repeat.set(10, 10);
+		window.app.assets.textures = window.app.assets.textures || [];
+		window.app.assets.textures['sand'] = texture;
 	});
 
 	textureLoader.load('assets/maps/noise--small.jpg', (texture) => {

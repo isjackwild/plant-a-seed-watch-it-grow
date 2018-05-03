@@ -247,7 +247,7 @@ const TerrainMap = () => {
 	canvas.height = window.app.assets.textures['noise'].image.height - 1;
 	const ctx = canvas.getContext('2d');
 	const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-	document.body.appendChild(canvas);
+	// document.body.appendChild(canvas);
 	canvas.style.position = 'absolute';
 	canvas.style.top = '0px';
 	canvas.style.left = '0px';

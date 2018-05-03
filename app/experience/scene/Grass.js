@@ -6,7 +6,9 @@ import {
 	BLADE_HEIGHT_MIN,
 	BLADE_HEIGHT_MAX,
 	FOG_COLOR,
+	SAND_COLOR,
 	GRASS_FOG_COLOR,
+	HEIGHT_MAP_SCALE,
 } from '../../CONSTANTS';
 
 const BLADE_VERTS = (BLADE_SEGS + 1) * 2;
@@ -105,7 +107,7 @@ const Grass = (terrainMap) => {
 				time: {type: 'f', value: 0.0},
 				map: {type: 't', value: texture},
 				heightMap: {type: 't', value: terrainMap},
-				heightMapScale: {type: '3f', value: [0.0001, 0.00025, 300.0]},
+				heightMapScale: {type: '3f', value: HEIGHT_MAP_SCALE},
 				patchSize: {type: 'f', value: PATCH_RADIUS * 2.0},
 				drawPos: {type: '2f', value: [0.0, 0.0]},
 				fogColor: {type: '3f', value: FOG_COLOR.toArray()},
@@ -122,7 +124,7 @@ const Grass = (terrainMap) => {
 	};
 
 	const update = ({ x, z }, correction) => {
-		time += 1 * correction * 0.006;
+		time += 1 * correction * 0.004;
 		mesh.material.uniforms.time.value = time;
 		mesh.material.uniforms.drawPos.value[0] = x;
 		mesh.material.uniforms.drawPos.value[1] = z;
