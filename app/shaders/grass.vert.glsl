@@ -73,7 +73,7 @@ void main() {
 	// and depending on which side of the blade this vertex is on
 	// and depending on how high up the blade we are
 	// TODO: calculate normal?
-	float c = max(cos(offset.w + bside * 3.14159) - (1.0 - hpct) * 0.4, 0.0);
+	float c = max(cos(offset.w + 1.0 - bside * 3.14159) - (1.0 - hpct) * 0.4, 0.0);
 	c = 0.3 + 0.7 * c * c * c;
 
 	// outputs
@@ -84,7 +84,7 @@ void main() {
 		1.0
 	);
 
-	// vColor = vec4(altitude);
+	vColor += vec4(altitude * 0.033);
 
 	vUv = uv;
 	gl_Position = projectionMatrix * modelViewMatrix * pos;

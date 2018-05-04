@@ -11,9 +11,9 @@ import _ from 'lodash';
 
 const kickIt = () => {
 	if (window.location.search.indexOf('debug') > -1) app.debug = true;
-	if (app.debug) {
-		app.gui = new dat.GUI();
-	}
+	// if (app.debug) {
+	// }
+	app.gui = new dat.GUI();
 	addEventListeners();
 	onResize();
 	loadAssets(init);

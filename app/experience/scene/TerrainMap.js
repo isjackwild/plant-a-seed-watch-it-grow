@@ -1,6 +1,7 @@
 const MAX_HEIGHT = 300;
 const LANDSCAPE_SIZE = 3072.0;
-const LIGHT_DIR = new THREE.Vector3(0.3, 1.0, 1).normalize();
+const LIGHT_DIR = new THREE.Vector3(0.5358267949789964, -0.49628350270878246, 0.6830756405564749).normalize();
+
 
 /**  Always positive modulus */
 const pmod =  (n, m) => ((n % m + m) % m);

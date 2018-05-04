@@ -4,7 +4,7 @@
 precision highp float;
 
 const vec3 LIGHT_COLOR = vec3(1.0, 1.0, 1.0);
-const vec3 AMBIENT_LIGHT = vec3(0.2, 0.2, 0.2);
+const vec3 AMBIENT_LIGHT = vec3(0.8, 0.8, 0.8);
 const vec3 DIRT_COLOR = vec3(0.77, 0.67, 0.45);
 
 uniform sampler2D map1;

@@ -1,7 +1,7 @@
 precision highp float;
 
 const vec3 LIGHT_COLOR = vec3(1.0, 1.0, 0.9);
-const vec3 AMBIENT_LIGHT = vec3(0.3, 0.3, 0.3);
+const vec3 AMBIENT_LIGHT = vec3(0.7, 0.7, 0.7);
 
 uniform sampler2D map;
 uniform sampler2D heightMap;
